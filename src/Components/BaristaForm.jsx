@@ -5,7 +5,7 @@ import drinksJson from "./drinks.json";
 
 // component is form for quiz
 const BaristaForm = () => {
-  //  INPUTS from user
+  //  stores user input per question (temp, syrup,...)
   const [inputs, setInputs] = useState({
       'temperature': '',
       'syrup': '',
@@ -13,7 +13,7 @@ const BaristaForm = () => {
       'blended': ''
     });
 
-    // possible answer choices for user to select from
+    // possible answer choices for user to select from when site loads
     const ingredients = {
       'temperature' : ['hot', 'lukewarm', 'cold'],
       'syrup': ['mocha', 'vanilla', 'toffee', 'maple', 'caramel', 'other', 'none'],
@@ -21,12 +21,46 @@ const BaristaForm = () => {
       'blended': ['yes', 'turbo', 'no']
     }
     
+    // finds the current drink user is quized on and it's recipe
     const [currentDrink, setCurrentDrink] = useState('')
     const [trueRecipe, setTrueRecipe] = useState({})
 
+    // segment determines if each var has correct value AND applies appropriate CSS
+    const [correctTemp,setCorrectTemp] = useState('');
+    const [correctSyrup,setCorrectSyrup] = useState('');
+    const [correctMilk,setCorrectMilk] = useState('');
+    const [correctBlend,setCorrectBlend] = useState('');
+
     
     const onCheckAnswer = () => {
-
+      // checks if value from temp in trueRecipe matches value in temperature in inputs
+      if (trueRecipe.temp != inputs['temperature']){
+        setCorrectTemp('wrong');
+      }
+      else {
+        setCorrectTemp("correct");
+      }
+      // checks if value from syrup in trueRecipe matches value in syrup in inputs
+      if (trueRecipe.syrup != inputs['syrup']){
+        setCorrectSyrup('wrong');
+      }
+      else {
+        setCorrectSyrup("correct");
+      }
+      // checks if value from milk in trueRecipe matches value in milk in inputs
+      if (trueRecipe.milk != inputs['milk']){
+        setCorrectMilk('wrong');
+      }
+      else {
+        setCorrectMilk("correct");
+      }
+      // checks if value from blended in trueRecipe matches value in blended in inputs
+      if (trueRecipe.blended != inputs['blended']){
+        setCorrectBlend('wrong');
+      }
+      else {
+        setCorrectBlend("correct");
+      }
     }
 
     // randomly finds new drink and updates currentDrink and trueRecipe var for that drink
@@ -37,7 +71,6 @@ const BaristaForm = () => {
       setCurrentDrink(drinksJson.drinks[randomDrinkIndex].name)
       setTrueRecipe(drinksJson.drinks[randomDrinkIndex].ingredients)
     }
-
     // clears imput fields and finds new drink
     const onNewDrink = () => {
       // clears the values for input var
@@ -48,6 +81,10 @@ const BaristaForm = () => {
         'blended': '' });
       // calls getNextDrink function to randomly grab a new drink
       getNextDrink();
+      setCorrectTemp('');
+      setCorrectSyrup('');
+      setCorrectMilk('');
+      setCorrectBlend('');
     }
 
     return (
@@ -60,7 +97,8 @@ const BaristaForm = () => {
             <form action="">
               {/* Temperature Q&A */}
               <h3>Temperature</h3>
-                <div className="answer-space" >
+              {/* id determines CSS to apply based on value of correctTemp */}
+                <div className="answer-space" id="correctTemp" >
                   {/* indexes var inputs to get value at key temperature */}
                   {inputs["temperature"]} 
                 </div>
@@ -74,7 +112,8 @@ const BaristaForm = () => {
                 />
                 {/* Syrup Q&A */}
                 <h3>Syrup</h3>
-                  <div className="answer-space" >
+                {/* id determines CSS to apply based on value of correctSyrup */}
+                  <div className="answer-space" id="correctSyrup">
                     {/* indexes var inputs to get value at key syrup */}
                     {inputs["syrup"]} 
                   </div>
@@ -87,7 +126,8 @@ const BaristaForm = () => {
                     checked={inputs["syrup"]}
                   />{/* Milk Q&A */}
                   <h3>Milk</h3>
-                    <div className="answer-space" >
+                  {/* id determines CSS to apply based on value of correctMilk */}
+                    <div className="answer-space" id="correctMilk">
                       {/* indexes var inputs to get value at key milk */}
                       {inputs["milk"]} 
                     </div>
@@ -100,7 +140,8 @@ const BaristaForm = () => {
                       checked={inputs["milk"]}
                     />{/* Blended Q&A */}
                     <h3>Blended</h3>
-                      <div className="answer-space" >
+                    {/* id determines CSS to apply based on value of correctBlend */}
+                      <div className="answer-space" id="correctBlend">
                         {/* indexes var inputs to get value at key blended */}
                         {inputs["blended"]} 
                       </div>
