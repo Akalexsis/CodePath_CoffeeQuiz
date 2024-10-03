@@ -1,0 +1,18 @@
+body {
+    background-image: url('./assets/coffee-bkg.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.App {
+    background-color: rgb(222, 187, 141, 0.7);
+}
+.title-container {
+    text-align: center;
+    color: rgb(80, 45, 0);
+}
+
+.title-container p{
+    font-weight: bold;
+}
+
