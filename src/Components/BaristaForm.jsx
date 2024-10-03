@@ -1,36 +1,62 @@
 import React, { useState } from "react";
 import RecipeChoices from "./RecipeChoices";
+import drinksJson from "./drinks.json";
 
 
 // component is form for quiz
 const BaristaForm = () => {
-    // possible INPUTS from user
-    const [inputs, setInputs] = useState({
-        'temperature': '',
-        'syrup': '',
-        'milk': '',
-        'blended': ''
-      });
+  //  INPUTS from user
+  const [inputs, setInputs] = useState({
+      'temperature': '',
+      'syrup': '',
+      'milk': '',
+      'blended': ''
+    });
 
-      // possible answer choices for user to select from
-      const ingredients = {
-        'temperature' : ['hot', 'lukewarm', 'cold'],
-        'syrup': ['mocha', 'vanilla', 'toffee', 'maple', 'caramel', 'other', 'none'],
-        'milk': ['cow', 'oat', 'goat', 'almond', 'none'],
-        'blended': ['yes', 'turbo', 'no']
-      }
-      
+    // possible answer choices for user to select from
+    const ingredients = {
+      'temperature' : ['hot', 'lukewarm', 'cold'],
+      'syrup': ['mocha', 'vanilla', 'toffee', 'maple', 'caramel', 'other', 'none'],
+      'milk': ['cow', 'oat', 'goat', 'almond', 'none'],
+      'blended': ['yes', 'turbo', 'no']
+    }
+    
+    const [currentDrink, setCurrentDrink] = useState('')
+    const [trueRecipe, setTrueRecipe] = useState({})
+
+    
     const onCheckAnswer = () => {
 
     }
 
-    const onNewDrink = () => {
+    // randomly finds new drink and updates currentDrink and trueRecipe var for that drink
+    const getNextDrink = () => {
+      // randomly selects a number from however many drinnks are in JSON file
+      let randomDrinkIndex = Math.floor(Math.random() * drinksJson.drinks.length);
+      // updates name of current drink
+      setCurrentDrink(drinksJson.drinks[randomDrinkIndex].name)
+      setTrueRecipe(drinksJson.drinks[randomDrinkIndex].ingredients)
+    }
 
+    // clears imput fields and finds new drink
+    const onNewDrink = () => {
+      // clears the values for input var
+      setInputs({
+        'temperature': '',
+        'milk': '',
+        'syrup': '',
+        'blended': '' });
+      // calls getNextDrink function to randomly grab a new drink
+      getNextDrink();
     }
 
     return (
         <div>
             <h2>Hi, I'd like to order a: </h2>
+            <div className="drink-container">
+              <h2 className="mini-header">{currentDrink}</h2>
+              <button type="new-drink-button" className="button newdrink" onClick={onNewDrink}>🔄</button>
+            </div>
             <form action="">
               {/* Temperature Q&A */}
               <h3>Temperature</h3>
@@ -40,9 +66,7 @@ const BaristaForm = () => {
                 </div>
                 <RecipeChoices
                   handleChange={(e) => setInputs((prevState) => ({
-                    ...prevState,
-                    [e.target.name]: e.target.value,
-                  }))}
+                    ...prevState, [e.target.name]: e.target.value}))}
                   label="temperature"
                   // indexes the ingredients var and displays all the answer choices for temperature
                   choices={ingredients["temperature"]}
@@ -56,9 +80,7 @@ const BaristaForm = () => {
                   </div>
                   <RecipeChoices
                     handleChange={(e) => setInputs((prevState) => ({
-                      ...prevState,
-                      [e.target.name]: e.target.value,
-                    }))}
+                      ...prevState,[e.target.name]: e.target.value}))}
                     label="syrup"
                     // indexes the ingredients var and displays all the answer choices for syrup
                     choices={ingredients["syrup"]}
@@ -71,9 +93,7 @@ const BaristaForm = () => {
                     </div>
                     <RecipeChoices
                       handleChange={(e) => setInputs((prevState) => ({
-                        ...prevState,
-                        [e.target.name]: e.target.value,
-                      }))}
+                        ...prevState, [e.target.name]: e.target.value}))}
                       label="milk"
                       // indexes the ingredients var and displays all the answer choices for milk
                       choices={ingredients["milk"]}
